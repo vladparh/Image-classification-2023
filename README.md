@@ -31,7 +31,7 @@
 | basketball_court    | 191   | 762   |
 | helicopter    | 149   | 2716   |
 
-Подробнее ознакомиться с исследование авторов датасета можно на [arxiv](https://captain-whu.github.io/iSAID/dataset.html)
+Подробнее ознакомиться с исследование авторов датасета можно на [arxiv](https://arxiv.org/abs/1905.12886)
 
 Ссылка на [датасет](https://captain-whu.github.io/iSAID/dataset.html) от авторов
 
