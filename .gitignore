@@ -230,6 +230,9 @@ pyrightconfig.json
 pyvenv.cfg
 pip-selfcheck.json
 
+EDA_processing/train
+EDA_processing/iSAID_train.json
+
 ### VirtualEnv ###
 # Virtualenv
 # http://iamzed.com/2009/05/07/a-primer-on-virtualenv/
