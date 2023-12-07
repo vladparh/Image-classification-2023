@@ -1,0 +1,20 @@
+path: train_data
+train: images/train
+val: images/val
+
+names:
+  1: storage_tank
+  2: Large_Vehicle
+  3: Small_Vehicle
+  4: plane
+  5: ship
+  6: Swimming_pool
+  7: Harbor
+  8: tennis_court
+  9: Ground_Track_Field
+  10: Soccer_ball_field
+  11: baseball_diamond
+  12: Bridge
+  13: basketball_court
+  14: Roundabout
+  15: Helicopter
