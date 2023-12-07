@@ -35,3 +35,26 @@
 
 Ссылка на [датасет](https://captain-whu.github.io/iSAID/dataset.html) от авторов
 
+## Препроцессинг датасета
+
+### Конвертация СOCO в Yolo
+
+```
+python3 data_preprocessing/make_yolo_labels.py \
+-ca /path_to_coco.json \
+-ld /path_to_yolo_labels_dir \
+-id /path_to_images_dir
+```
+
+### Разбивка изображений на более мелкие
+```
+python3 data_preprocessing/split.py \
+-idi /path_to_images_dir \
+-ldi /path_to_labels_dir \
+-ido /path_to_output_images_dir \
+-ldo /path_to_output_labels_dir \
+-fs /split_frame_size
+```
+
+#### Скрипты работают на python3.10
+
