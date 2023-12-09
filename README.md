@@ -46,14 +46,22 @@ python3 data_preprocessing/make_yolo_labels.py \
 -id /path_to_images_dir
 ```
 
-### Разбивка изображений на более мелкие
+### Разбивка изображений на более мелкие (рекомендуемое split_frame_size = 1280)
 ```
 python3 data_preprocessing/split.py \
 -idi /path_to_images_dir \
 -ldi /path_to_labels_dir \
 -ido /path_to_output_images_dir \
 -ldo /path_to_output_labels_dir \
--fs /split_frame_size
+-fs split_frame_size
+```
+Можно так-же воспользоваться bash скриптом, чтобы из train_data получить cropped/train_data
+
+```
+chmod +x make_cropped_train_data.sh
+```
+```
+./make_cropped_train_data.sh
 ```
 
 #### Скрипты работают на python3.10
