@@ -58,3 +58,14 @@ python3 data_preprocessing/split.py \
 
 #### Скрипты работают на python3.10
 
+#### Датасет для обучения
+
+Key ID и ключ в закрепе беседы
+
+```
+aws configure
+```
+```
+aws --endpoint-url="https://storage.yandexcloud.net" \
+s3 cp --recursive s3://isaiddata/train_data train_data
+```
