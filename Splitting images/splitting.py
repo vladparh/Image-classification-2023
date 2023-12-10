@@ -4,11 +4,11 @@ from PIL import Image
 from tqdm import tqdm
 import pandas as pd
 
-annotations_path = "C:/Users/Vlad/Downloads/archive (2)/ValidationData/val/Annotations/iSAID_val.json"
-img_path_input = 'C:/Users/Vlad/Downloads/isaid_test/images/'
-label_output_path = 'C:/Users/Vlad/Downloads/yolo_test/labels/'
-img_output_path = 'C:/Users/Vlad/Downloads/yolo_test/images/'
-csv_path_output = 'C:/Users/Vlad/Downloads/yolo_test/test.csv'
+annotations_path = "Annotations/iSAID_val.json"
+img_path_input = 'isaid_test/images/'
+label_output_path = 'yolo_test/labels/'
+img_output_path = 'yolo_test/images/'
+csv_path_output = 'yolo_test/test.csv'
 frame_size = 800 #минимальный размер изображений на выходе
 min_part = 0.5 #минимальная часть объектов, для которых создаётся аннотация
 
