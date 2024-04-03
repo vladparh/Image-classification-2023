@@ -3,3 +3,11 @@ opencv-python==4.8.1.78
 python-magic==0.4.27
 aiogram==2.25.1
 torch==2.1.2
+fastapi==0.110.0
+setuptools==69.2.0
+wheel==0.43.0
+python-multipart==0.0.9
+pandas==2.2.1
+uvicorn==0.29.0
+pillow==10.2.0
+gitpython==3.1.42
