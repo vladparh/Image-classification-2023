@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import torch as torch
 from PIL import Image
@@ -57,7 +56,7 @@ async def change_mode(mode: str) -> str:
         model_class.mode = 'Default'
         return 'Модель будет возвращать обычные изображения'
     else:
-        return HTTPException(status_code=400, detail='BAD REQUEST. Возможные параметры запроса: {gray} или {default}')
+        raise HTTPException(status_code=400, detail='BAD REQUEST. Возможные параметры запроса: {gray} или {default}')
 
 
 @app.post("/uploadfile")
