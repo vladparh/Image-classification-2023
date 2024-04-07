@@ -60,24 +60,24 @@ async def processing_image(message):
     if message.content_type == 'photo':  # сохраняем сжатое изображение
         await bot.send_message(chat_id=message.chat.id, text='Начинаю обработку изображения...')
         await message.photo[-1].download('satellite_photo.jpg')
-        im = 'C:\Python\\telegramBot\satellite_photo.jpg'
+        im = 'satellite_photo.jpg'
         results = model(im)
         results.save()
 
-        photo = InputFile("C:\Python\\telegramBot\\runs\detect\exp\satellite_photo.jpg")
+        photo = InputFile("runs\detect\exp\satellite_photo.jpg")
         await bot.send_photo(chat_id=message.chat.id, photo=photo)
-        shutil.rmtree("C:\Python\\telegramBot\\runs\detect\exp")  # после отправки удаляю фолдер, чтобы не засорять папку
+        shutil.rmtree("runs\detect\exp")  # после отправки удаляю фолдер, чтобы не засорять папку
 
     elif message.content_type == 'document':  # сохраняем исходное изображение
         try:  # проверяем, является ли отправленный исходник изображением
             await bot.send_message(chat_id=message.chat.id, text='Начинаю обработку изображения...')
             await message.document.download('satellite_photo.jpg')
-            im = 'C:\Python\\telegramBot\satellite_photo.jpg'
+            im = 'satellite_photo.jpg'
             results = model(im)
             results.save()
-            photo = InputFile("C:\Python\\telegramBot\\runs\detect\exp\satellite_photo.jpg")
+            photo = InputFile("runs\detect\exp\satellite_photo.jpg")
             await bot.send_photo(chat_id=message.chat.id, photo=photo)
-            shutil.rmtree("C:\Python\\telegramBot\\runs\detect\exp")
+            shutil.rmtree("runs\detect\exp")
         except:
             await bot.send_message(chat_id=message.chat.id, text='Отправленный файл не является изображением')
             return
