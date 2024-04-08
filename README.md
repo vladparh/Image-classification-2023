@@ -103,10 +103,12 @@ s3 cp --recursive s3://isaiddata/train_data train_data
 В проекте реализованы 2 сервиса: telegram-бот и fastapi-сервис. Иструкция по их развёртованию из docker-образа описана в файле [docker-manual.md](docker-manual.md).
 
 Пример использования сервиса представлен ниже
-1) Запросы /check, /help, /last
+1) Запросы /check, /help, /last :
+
 ![](https://github.com/MrseFuntik/python_hw4/blob/main/Ex/Example-usage%20(check%20&%20help%20&%20last).gif)
 
-2) Ниже пример получения изображения с классифицируемыми объектами, а также демонстрация изменения режима работы сервиса
+2) Пример получения изображения с классифицируемыми объектами, а также демонстрация изменения режима работы сервиса :
+
 ![](https://github.com/MrseFuntik/python_hw4/blob/main/Ex/Example-usage%20(uploadfile%20%26%20mode).gif)
 
 ### Telegram-бот
