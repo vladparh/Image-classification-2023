@@ -59,7 +59,7 @@ async def cmd_help(message: types.Message):
 
 
 @dp.message(F.photo)  # от юзера принимает только сжатые фотки / исходники изображений
-async def processing_image(message):
+async def processing_image(message: types.Message, bot: Bot):
     await bot.send_message(chat_id=message.chat.id, text='Начинаю обработку изображения...')
     await bot.download(message.photo[-1], destination='satellite_photo.jpg')
     im = 'satellite_photo.jpg'
