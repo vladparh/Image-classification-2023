@@ -100,7 +100,7 @@ s3 cp --recursive s3://isaiddata/train_data train_data
 
 ## Сервисы
 
-В проекте реализованы 2 сервиса: telegram-бот и fastapi-сервис. Иструкция по их развёртованию из docker-образа описана в файле [docker-manual.md](docker-manual.md).
+В проекте реализованы 2 сервиса: telegram-бот и fastapi-сервис. Иструкция по развёртованию fastapi-сервиса из docker-образа описана в файле [docker-manual.md](docker-manual.md).
 
 ### FastAPI-сервис
 
