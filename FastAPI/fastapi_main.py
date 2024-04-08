@@ -47,7 +47,7 @@ async def get_last_image():
         return {'filename': model_class.last_im_name, 'size': model_class.last_im.size}
 
 
-@app.post("/mode")
+@app.post("/mode") # выбор типа изображения: обычное или черно-белое
 async def change_mode(mode: str) -> str:
     if mode == 'gray' or mode == 'Gray':
         model_class.mode = 'L'
@@ -59,7 +59,7 @@ async def change_mode(mode: str) -> str:
         raise HTTPException(status_code=400, detail='BAD REQUEST. Возможные параметры запроса: {gray} или {default}')
 
 
-@app.post("/uploadfile")
+@app.post("/uploadfile") # получение предсказаний модели
 async def create_upload_file(file: UploadFile = File(...)):
     try:
         shutil.rmtree("runs\detect\exp")  # после отправки удаляем фолдер, чтобы не засорять папку
