@@ -1,14 +1,30 @@
+from io import BytesIO
+from unittest import mock
 import pytest
 from aiogram.filters import Command
 from aiogram.methods import SendMessage
+from aiogram import Bot
 from aiogram_tests import MockedBot
 from aiogram_tests.handler import MessageHandler
-from aiogram_tests.types.dataset import MESSAGE
+from aiogram_tests.types.dataset import MESSAGE, MESSAGE_WITH_PHOTO
 from hse_bot import cmd_start
 from hse_bot import cmd_help
 from hse_bot import processing_image
 
 
+async def mock_download_png(*_args, **_kwargs):
+    with open('test_img.png', 'rb') as f:
+        io = BytesIO(f.read())
+    return io
+
+
+async def mock_download_jpg(*_args, **_kwargs):
+    with open('test_img.jpg', 'rb') as f:
+        io = BytesIO(f.read())
+    return io
+
+
+# тестирование метода /start
 @pytest.mark.asyncio
 async def test_cmd_start():
     requester = MockedBot(request_handler=MessageHandler(cmd_start, Command(commands=['start'])))
@@ -22,6 +38,7 @@ async def test_cmd_start():
                               'таковые найдутся')
 
 
+# тестирование метода /help
 @pytest.mark.asyncio
 async def test_cmd_help():
     requester = MockedBot(request_handler=MessageHandler(cmd_help, Command(commands=['help'])))
@@ -49,3 +66,23 @@ async def test_cmd_help():
                               'Чтобы получить изображение с классифицируемыми объектами, просто отправь '
                               'боту изображение. Это может быть как сжатое изображение, так и исходный '
                               'файл, главное чтобы расширение файла было либо .png, либо .jpg')
+
+
+# тестирование обработки изображений png
+@mock.patch.object(Bot, 'download', mock_download_png, create=True)
+@pytest.mark.asyncio
+async def test_processing_image_png():
+    requester = MockedBot(request_handler=MessageHandler(processing_image))
+    calls = await requester.query(MESSAGE_WITH_PHOTO.as_object())
+    answer_message = calls.send_message.fetchone().text
+    assert answer_message == 'Начинаю обработку изображения...'
+
+
+# тестирование обработки изображений jpg
+@mock.patch.object(Bot, 'download', mock_download_jpg, create=True)
+@pytest.mark.asyncio
+async def test_processing_image_jpg():
+    requester = MockedBot(request_handler=MessageHandler(processing_image))
+    calls = await requester.query(MESSAGE_WITH_PHOTO.as_object())
+    answer_message = calls.send_message.fetchone().text
+    assert answer_message == 'Начинаю обработку изображения...'
