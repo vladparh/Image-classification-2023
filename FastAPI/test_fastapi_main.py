@@ -42,7 +42,7 @@ def test_change_mode_gray():
 
 def test_create_upload_file_image():
     """Тестирование метода /uploadfile загрузкой изображения"""
-    response = client.post('/uploadfile', files={'file': open('test_img.jpg.jpg', 'rb')})
+    response = client.post('/uploadfile', files={'file': open('test_data/test_img.jpg', 'rb')})
     assert response.status_code == 200
 
 
@@ -55,9 +55,6 @@ def test_get_last_image_with_image():
 
 def test_create_upload_file_non_image():
     """Тестирование метода /uploadfile загрузкой не изображения"""
-    response = client.post('/uploadfile', files={'file': open('non_image.txt', 'rb')})
+    response = client.post('/uploadfile', files={'file': open('test_data/non_image.txt', 'rb')})
     assert response.status_code == 500
     assert response.text == '{"detail":"File must be an image (.png or .jpg)"}'
-
-
-
