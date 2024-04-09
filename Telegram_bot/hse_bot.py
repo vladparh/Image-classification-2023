@@ -6,13 +6,12 @@ from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.storage.memory import MemoryStorage
 import torch
 import shutil
-
+from config import TOKEN
 from aiogram.types import FSInputFile
 
-token = ''  # здесь мой локальный токен
 
 logging.basicConfig(level=logging.INFO)
-bot = Bot(token=token)
+bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
