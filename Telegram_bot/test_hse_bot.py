@@ -13,13 +13,13 @@ from hse_bot import processing_image
 
 
 async def mock_download_png(*_args, **_kwargs):
-    with open('test_img.png', 'rb') as f:
+    with open('sample_images/test_img.png', 'rb') as f:
         io = BytesIO(f.read())
     return io
 
 
 async def mock_download_jpg(*_args, **_kwargs):
-    with open('test_img.jpg', 'rb') as f:
+    with open('sample_images/test_img.jpg', 'rb') as f:
         io = BytesIO(f.read())
     return io
 
