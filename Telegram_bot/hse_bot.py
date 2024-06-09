@@ -2,13 +2,11 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters import Command
-from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.storage.memory import MemoryStorage
-import torch
 import shutil
 from config import TOKEN
 from aiogram.types import FSInputFile
-
+from ultralytics import YOLO
 
 logging.basicConfig(level=logging.INFO)
 bot = Bot(token=TOKEN)
@@ -33,15 +31,10 @@ objects = '''
 ⏺ helicopter - вертолёт
 '''
 
-
-class Form(StatesGroup):
-    usless_state = State()  # на будущее
+model = YOLO(r"last.pt")
 
 
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='last.pt')
-
-
-@dp.message(Command("start"))  # command /start handler
+@dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     await message.answer('Приветствую. Наш бот детектит объекты, относящиеся к 15 различным классам, среди которых '
                          'малый и крупный автотранспорт, самолеты, вертолеты, корабли и прочее. '
@@ -49,7 +42,7 @@ async def cmd_start(message: types.Message):
                          'изображение с обозначенными объектами, если таковые найдутся')
 
 
-@dp.message(Command("help"))  # command /help handler
+@dp.message(Command("help"))
 async def cmd_help(message: types.Message):
     await message.answer(f"Наш бот классифицирует следующие объекты:\n{objects}\n"
                          "Чтобы получить изображение с классифицируемыми объектами, просто отправь боту изображение. "
@@ -57,16 +50,29 @@ async def cmd_help(message: types.Message):
                          "было либо .png, либо .jpg")
 
 
-@dp.message(F.photo)  # от юзера принимает только сжатые фотки / исходники изображений
+@dp.message(F.document)  # Принимает документы
+async def processing_document(message: types.Message, bot: Bot):
+    await bot.send_message(chat_id=message.chat.id, text='Начинаю обработку документа...')
+    try:  # если не получается загрузить документ как изображение, оповещаем юзера об ошибке
+        await bot.download(message.document, destination='satellite_photo.jpg')
+        im = 'satellite_photo.jpg'
+        model.predict(im, save=True)
+        photo = FSInputFile(r"runs\detect\predict\satellite_photo.jpg")
+        await bot.send_photo(chat_id=message.chat.id, photo=photo)
+        shutil.rmtree(r"runs\detect\predict")  # после отправки удаляю фолдер, чтобы не засорять папку
+    except:
+        await bot.send_message(chat_id=message.chat.id, text='Невозможно прочитать документ, как изображение')
+
+
+@dp.message(F.photo)  # Принимает сжатые изображения
 async def processing_image(message: types.Message, bot: Bot):
     await bot.send_message(chat_id=message.chat.id, text='Начинаю обработку изображения...')
     await bot.download(message.photo[-1], destination='satellite_photo.jpg')
     im = 'satellite_photo.jpg'
-    results = model(im)
-    results.save()
-    photo = FSInputFile("runs\detect\exp\satellite_photo.jpg")
+    model.predict(im, save=True)
+    photo = FSInputFile(r"runs\detect\predict\satellite_photo.jpg")
     await bot.send_photo(chat_id=message.chat.id, photo=photo)
-    shutil.rmtree("runs\detect\exp")  # после отправки удаляю фолдер, чтобы не засорять папку
+    shutil.rmtree(r"runs\detect\predict")  # после отправки удаляю фолдер, чтобы не засорять папку
 
 
 async def main():
