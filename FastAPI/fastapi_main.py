@@ -4,12 +4,12 @@ from PIL import Image
 import shutil
 from fastapi.responses import FileResponse
 import uvicorn
-from pathlib import Path
+from ultralytics import YOLO
 
 app = FastAPI()
 
 torch.hub._validate_not_a_forked_repo=lambda a,b,c: True  # для корректной загрузки в случае деплоя
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='last.pt', force_reload=True)
+model = YOLO(r"last.pt")
 
 
 class ModelClass:  # класс, для хранения инфы про режим работы и последнее изображение
@@ -30,7 +30,7 @@ def help_func():
 
     return f"Наша модель классифицирует следующие объекты:{objects}. На примере Postman, Чтобы получить " \
            f"изображение с классифицией объектов, отправь файл, являющийся изображением в формате .png или .jpg. " \
-           f"(Params: Body, type of key: File, параметр: file), пример запроса: http://0.0.0.0:8000/uploadfile/. " \
+           f"(Params: Body, type of key: File, параметр: file), пример запроса: http://localhost:8000/uploadfile. " \
            f"Доступные команды сервиса: " \
            f"GET: /check/ - проверка статуса работы сервиса; " \
            f"GET: /help/ - справка; " \
@@ -62,7 +62,7 @@ async def change_mode(mode: str) -> str:
 @app.post("/uploadfile") # получение предсказаний модели
 async def create_upload_file(file: UploadFile = File(...)):
     try:
-        shutil.rmtree("runs\detect\exp")  # после отправки удаляем фолдер, чтобы не засорять папку
+        shutil.rmtree("runs\detect\predict")  # после отправки удаляем фолдер, чтобы не засорять папку
     except:  # если это первый запуск, удаление не произойдёт и мы идём далее
         pass
     try:
@@ -71,14 +71,12 @@ async def create_upload_file(file: UploadFile = File(...)):
         model_class.last_im = im
         if model_class.mode == 'L':  # перекрашиваем в черно-белый если юзер менял мод работы
             im = im.convert("L")
+        im = im.save(file.filename)
+
+        res = model(file.filename, save=True)
+        return FileResponse(rf"runs\detect\predict\{file.filename}")
     except Exception:
-        raise HTTPException(status_code=500, detail='File must be an image (.png or .jpg)')
-    results = model(im)
-    img = results.render()
-    img = Image.fromarray(img[0], 'RGB')
-    img.save('my.png')
-    path = Path("my.png")
-    return FileResponse(path)
+        raise HTTPException(status_code=500, detail='Файл должен быть изображением (.png or .jpg)')
 
 
 if __name__ == "__main__":
